@@ -3,9 +3,26 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+//connect DB
+require('dotenv').config();
+console.log(process.env.DB_HOST);
+const mongoose = require('mongoose')
+const { DB_HOST, DB_NAME,DB_PORT, DB_USER, DB_PASS } = process.env
+mongoose.connect(`mongodb://${DB_HOST}:${DB_PORT}/${DB_NAME}`, {
+  user: DB_USER,
+  pass: DB_PASS,
+  useUnifiedTopology: true,
+  useNewUrlParser: true
+}).then(() => {
+  console.log('connect');
+}).catch(err => {
+  console.log('connect fail!');
+})
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+// project
+const productsRouter = require("./routes/products");
 
 var app = express();
 var cors = require('cors')
@@ -23,14 +40,15 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+app.use('/products', productsRouter);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
