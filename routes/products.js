@@ -48,7 +48,8 @@ router.get("/:id", async function (req, res, next) {
 // Create Product
 router.post("/", async function (req, res, next) {
   try {
-    const { product_name, product_price, product_amount, product_detail, product_types } =
+    
+    const { product_name, product_price, product_amount, product_detail, product_types, product_img } =
       req.body;
     let newProduct = new productsModel({
       product_name: product_name,
@@ -56,6 +57,7 @@ router.post("/", async function (req, res, next) {
       product_price: product_price,
       product_detail: product_detail,
       product_amount: product_amount,
+      product_img: product_img
     });
     let product = await newProduct.save();
     return res.status(200).send({
@@ -116,7 +118,6 @@ router.delete("/:id", async function (req, res, next) {
         _id: mongoose.Types.ObjectId(id),
       }
     );
-    let product = await productsModel.findById(id);
     return res.status(200).send({
       message: "Delete success",
       success: true,
