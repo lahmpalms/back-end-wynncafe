@@ -5,11 +5,9 @@ const products = new mongoose.Schema({
     unique : true,
     required : true
   },
-  product_types: [
-    {
-      type: mongoose.Types.ObjectId, 
-      ref: 'product_types'}
-  ],
+  product_types: {
+    type: String
+  },
   product_price: {
     type: Number,
     require: true,
