@@ -5,10 +5,10 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 //connect DB
 require('dotenv').config();
-console.log(process.env.DB_HOST);
+console.log('172.20.1.11');
 const mongoose = require('mongoose')
 const { DB_HOST, DB_NAME,DB_PORT, DB_USER, DB_PASS } = process.env
-mongoose.connect(`mongodb://${DB_HOST}:${DB_PORT}/${DB_NAME}`, {
+mongoose.connect(`mongodb://172.20.1.11:${DB_PORT}/${DB_NAME}`, {
   user: DB_USER,
   pass: DB_PASS,
   useUnifiedTopology: true,

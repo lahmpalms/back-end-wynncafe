@@ -1,0 +1,30 @@
+version: "2"
+services:
+  back-end-wynncafe:
+    hostname: app
+    container_name: app
+    restart: always
+    image: back-end-wynncafe:v1
+    build: .
+    ports:
+      - "3000:3000"
+    networks:
+      app_network:
+        ipv4_address: 172.20.1.10
+  mongo:
+    hostname: mongo
+    container_name: mongo
+    image: mongo
+    ports:
+      - "27017:27017"
+    networks:
+      app_network:
+        ipv4_address: 172.20.1.11
+
+networks:
+  app_network:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.20.1.0/16
