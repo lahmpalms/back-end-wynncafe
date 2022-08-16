@@ -4,8 +4,7 @@ services:
     hostname: app
     container_name: app
     restart: always
-    image: back-end-wynncafe:v1
-    build: .
+    image: ppalmtnp/back-end-wynncafe:v1
     ports:
       - "3000:3000"
     networks:
