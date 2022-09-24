@@ -8,6 +8,7 @@ require("dotenv").config();
 // console.log('172.20.1.11');
 const mongoose = require("mongoose");
 const { DB_HOST, DB_NAME, DB_PORT, DB_USER, DB_PASS } = process.env;
+
 console.log(DB_HOST);
 mongoose
   .connect(`mongodb://${DB_HOST}:${DB_PORT}/${DB_NAME}`, {
@@ -24,7 +25,7 @@ mongoose
   });
 
 var indexRouter = require("./routes/index");
-var usersRouter = require("./routes/users");
+const usersRouter = require("./routes/users");
 // project
 const productsRouter = require("./routes/products");
 const ordersRouter = require("./routes/orders");
