@@ -23,6 +23,19 @@ mongoose
   .catch((err) => {
     console.log("connect fail!");
   });
+// mongoose
+//   .connect(`mongodb+srv://${DB_HOST}`, {
+//     user: DB_USER,
+//     pass: DB_PASS,
+//     useUnifiedTopology: true,
+//     useNewUrlParser: true,
+//   })
+//   .then(() => {
+//     console.log("connect");
+//   })
+//   .catch((err) => {
+//     console.log("connect fail!");
+//   });
 
 var indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
