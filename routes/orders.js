@@ -33,7 +33,7 @@ router.post("/", async function (req, res, next) {
             $set: { product_amount: totalAmount },
           }
         );
-        productOrder.push(product);
+        productOrder.push({product, qty: item.product_amount});
         totalSum = totalSum + price;
       }
     }
@@ -57,6 +57,28 @@ router.post("/", async function (req, res, next) {
   }
 });
 
+//get by id
+router.get("/:id", async function (req, res, next) {
+  try {
+    let id = req.params.id;
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).send({
+        message: "Invalid ID",
+        success: false,
+      });
+    }
+    let orders = await ordersModel.findById(id);
+    return res.status(200).send({
+      data: orders,
+      message: "success",
+      success: true,
+    });
+  } catch (error) {
+    return res.status(500).send({
+      message: "server error",
+    });
+  }
+});
 
 //update orders
 router.put("/:id", async function (req, res, next) {
