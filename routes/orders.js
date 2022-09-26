@@ -33,7 +33,7 @@ router.post("/", async function (req, res, next) {
             $set: { product_amount: totalAmount },
           }
         );
-        productOrder.push({product, qty: item.product_amount});
+        productOrder.push({ product, qty: item.product_amount });
         totalSum = totalSum + price;
       }
     }
@@ -95,7 +95,7 @@ router.put("/:id", async function (req, res, next) {
         _id: mongoose.Types.ObjectId(id),
       },
       {
-        $set: {statusCode: req.body.statusCode},
+        $set: { statusCode: req.body.statusCode },
       }
     );
     let orders = await ordersModel.findById(id);
@@ -168,10 +168,12 @@ router.get("/dashboard/total", async function (req, res, next) {
 });
 
 // get dashboard by date totalSumOrder,totalCountOrder
-router.get("/dashboard", async function (req, res, next) {
+router.get("/dashboard/date", async function (req, res, next) {
   try {
-    let convertStart = dayjs(req.query.start).startOf("day");
-    let convertEnd = dayjs(req.query.end).endOf("day");
+    const { startDate, endDate } = req.query;
+
+    let convertStart = dayjs(startDate).startOf("day");
+    let convertEnd = dayjs(endDate).endOf("day");
 
     let start = convertStart.$d;
     let end = convertEnd.$d;
