@@ -19,7 +19,7 @@ router.post("/", async function (req, res, next) {
       ) {
         return res.status(400).send({
           data: [],
-          message: "can not buy",
+          message: "fail",
           success: false,
         });
       } else {

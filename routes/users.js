@@ -4,6 +4,7 @@ var router = express.Router();
 const JsonWebToken = require("jsonwebtoken");
 const BodyParser = require("body-parser");
 const Bcrypt = require("bcryptjs");
+const { JWT_SECREAT_KEY } = process.env
 
 const usersModel = require("../models/users");
 
@@ -28,8 +29,9 @@ router.post("/signup", async function (req, res, next) {
     });
 
     let users = await newUsers.save();
+    const token = JsonWebToken.sign({users} ,JWT_SECREAT_KEY )
     return res.status(200).send({
-      data: users,
+      token: token,
       message: "Create success",
       success: true,
     });
@@ -55,19 +57,20 @@ router.post("/signin", async function (req, res, next) {
 
     const users = await usersModel.findOne({ email: req.body.email });
     if (!users) {
-      return res.status(200).send({
+      return res.status(400).send({
         message: "Incorrect email",
         success: false,
       });
     } else {
       if (!Bcrypt.compareSync(req.body.password, users.password)) {
-        return res.status(200).send({
+        return res.status(400).send({
           message: "Incorrect password",
           success: false,
         });
       } else {
+        const token = JsonWebToken.sign({users} ,JWT_SECREAT_KEY )
         return res.status(200).send({
-          data: users,
+          token: token,
           message: "success",
           success: true,
         });
