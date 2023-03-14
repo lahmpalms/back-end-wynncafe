@@ -42,6 +42,7 @@ router.post("/", async function (req, res, next) {
       productOrders: productOrder,
       total: totalSum,
       statusCode: "pending",
+      statusPayment: "pending",
     });
     let orders = await newOrders.save();
     return res.status(200).send({

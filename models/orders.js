@@ -14,6 +14,10 @@ const orders = new mongoose.Schema(
       type: String,
       default: "pending",
     },
+    statusPayment: {
+      type: String,
+      default: "pending",
+    },
   },
   {
     timestamps: true,

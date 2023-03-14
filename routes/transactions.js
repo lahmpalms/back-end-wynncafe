@@ -12,29 +12,50 @@ router.post("/", async function (req, res, next) {
     let ordersId = req.body.ordersId;
     let orders = await ordersModel.findById(ordersId);
     if (!!orders) {
-      await ordersModel
-        .updateOne(
-          {
+      if (req.body.status == "cancel" || req.body.status == "fail") {
+        await ordersModel
+          .deleteOne({
             _id: mongoose.Types.ObjectId(ordersId),
-          },
-          {
-            $set: { statusCode: req.body.status },
-          }
-        )
-        .then(async () => {
-          let transaction = new transactionsModel({
-            ordersId: req.body.ordersId,
-            total: orders.total,
-            statusTransactions: req.body.status,
+          })
+          .then(async () => {
+            let transaction = new transactionsModel({
+              ordersId: req.body.ordersId,
+              total: orders.total,
+              statusTransactions: req.body.status,
+            });
+            let transactionData = await transaction.save();
+            console.log(transactionData);
+            return res.status(200).send({
+              data: transactionData,
+              message: "success",
+              success: true,
+            });
           });
-          let transactionData = await transaction.save();
-          console.log(transactionData);
-          return res.status(200).send({
-            data: transactionData,
-            message: "success",
-            success: true,
+      } else {
+        await ordersModel
+          .updateOne(
+            {
+              _id: mongoose.Types.ObjectId(ordersId),
+            },
+            {
+              $set: { statusPayment: req.body.status },
+            }
+          )
+          .then(async () => {
+            let transaction = new transactionsModel({
+              ordersId: req.body.ordersId,
+              total: orders.total,
+              statusTransactions: req.body.status,
+            });
+            let transactionData = await transaction.save();
+            console.log(transactionData);
+            return res.status(200).send({
+              data: transactionData,
+              message: "success",
+              success: true,
+            });
           });
-        });
+      }
     } else {
       return res.status(400).send({
         message: "not found orders id",
