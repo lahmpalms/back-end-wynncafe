@@ -42,6 +42,7 @@ const usersRouter = require("./routes/users");
 // project
 const productsRouter = require("./routes/products");
 const ordersRouter = require("./routes/orders");
+const transactionsRouter = require("./routes/transactions");
 
 var app = express();
 var cors = require("cors");
@@ -61,6 +62,7 @@ app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/products", productsRouter);
 app.use("/orders", ordersRouter);
+app.use("/payment", transactionsRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
