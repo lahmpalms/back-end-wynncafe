@@ -7,22 +7,22 @@ var logger = require("morgan");
 require("dotenv").config();
 // console.log('172.20.1.11');
 const mongoose = require("mongoose");
-const { DB_HOST, DB_NAME, DB_PORT, DB_USER, DB_PASS } = process.env;
+const { DB_HOST, DB_NAME, DB_PORT, DB_USER, DB_PASSWORD, DB_PASS } = process.env;
 
 console.log(DB_HOST);
-mongoose
-  .connect(`mongodb://${DB_HOST}:${DB_PORT}/${DB_NAME}`, {
-    user: DB_USER,
-    pass: DB_PASS,
-    useUnifiedTopology: true,
-    useNewUrlParser: true,
-  })
-  .then(() => {
-    console.log("connect");
-  })
-  .catch((err) => {
-    console.log("connect fail!");
-  });
+// mongoose
+//   .connect(`mongodb://${DB_HOST}:${DB_PORT}/${DB_NAME}`, {
+//     user: DB_USER,
+//     pass: DB_PASS,
+//     useUnifiedTopology: true,
+//     useNewUrlParser: true,
+//   })
+//   .then(() => {
+//     console.log("connect");
+//   })
+//   .catch((err) => {
+//     console.log("connect fail!");
+//   });
 // mongoose
 //   .connect(`mongodb+srv://${DB_HOST}`, {
 //     user: DB_USER,
@@ -54,9 +54,24 @@ app.set("view engine", "ejs");
 
 app.use(logger("dev"));
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
+
+console.log(`mongodb://${DB_USER}:${DB_PASS}@${DB_HOST}:${DB_PORT}/${DB_NAME}?authSource=admin`);
+mongoose
+  .connect(`mongodb://${DB_USER}:${DB_PASS}@${DB_HOST}:${DB_PORT}/${DB_NAME}?authSource=admin`, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+
+  .then(() => {
+    console.log("Connected to the database!");
+  })
+  .catch((err) => {
+    console.log("Cannot connect to the database!", err);
+    process.exit();
+  });
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);

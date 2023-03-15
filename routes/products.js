@@ -14,6 +14,7 @@ router.get("/", async function (req, res, next) {
       success: true,
     });
   } catch (error) {
+    console.log(error);
     return res.status(500).send({
       message: "server error",
       success: false,
